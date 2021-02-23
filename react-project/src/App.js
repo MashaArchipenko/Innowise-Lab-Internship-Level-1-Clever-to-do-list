@@ -1,4 +1,5 @@
-function App() {
+function App() 
+{
   return (
     <div>
       <h1>Hello People)</h1>
