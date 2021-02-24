@@ -1,12 +1,14 @@
 import React from 'react'
-
+import Header from './Components/Header'
+import Action from './Components/Action'
 
 function App() 
 {
   return (
-    <div>
-      <h1>Hello People)</h1>
-      </div>
+    <React.StrictMode>
+    <Header />
+    <Action />
+    </React.StrictMode>
   );
 }
 

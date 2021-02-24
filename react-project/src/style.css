@@ -1,0 +1,24 @@
+header {
+    font-family: "Montserrat", sans-serif;
+    height: 76px;
+    padding: 25px 134px;
+    background: rgba(204, 203, 202, 0.24);
+    font-size: 25px;
+    line-height: 30px;
+    color: white;
+}
+
+body {
+    background: url(./img/bcgr.png) no-repeat;
+}
+
+.notSignUpBlock {
+
+    width: 80%;
+    height: 19.688em; /*315px*/
+    margin-left: 10%;
+    margin-top: 114px;
+
+    background: rgba(196, 196, 196, 0.69);
+    border-radius: 20px;
+}
