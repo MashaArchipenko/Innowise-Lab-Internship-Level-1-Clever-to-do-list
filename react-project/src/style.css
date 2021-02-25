@@ -1,24 +1,56 @@
 header {
-    font-family: "Montserrat", sans-serif;
+    
     height: 76px;
-    padding: 25px 134px;
+    padding: 2% 15%;
     background: rgba(204, 203, 202, 0.24);
     font-size: 25px;
     line-height: 30px;
     color: white;
 }
+@media screen and (max-width:500px)
+{
+    header{
+        height: 50px;
+    padding: 2% 15%;
+    font-size: 15px;
+    }
+}
 
 body {
     background: url(./img/bcgr.png) no-repeat;
+    font-family: "Montserrat", sans-serif;
 }
 
 .notSignUpBlock {
-
-    width: 80%;
-    height: 19.688em; /*315px*/
-    margin-left: 10%;
+    width: 70%;
+    height: 19.688em;
+    /*315px*/
+    margin-left: 15%;
     margin-top: 114px;
 
     background: rgba(196, 196, 196, 0.69);
     border-radius: 20px;
+    
+    padding-top: 115px;
+}
+
+.textSignUp {
+    width: 20%;
+    height: 92.41px;
+    margin-left: 70%;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+}
+
+.signOnForm
+{
+    width: 360px;
+    height: 444px;
+    margin-left: 20%;
+    margin-top: 49px;
+    position: absolute;
+    
+    background: #C4C4C4;
+    border-radius: 20px;
+
 }
