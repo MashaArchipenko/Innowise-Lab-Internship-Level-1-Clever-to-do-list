@@ -1,8 +1,14 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Form} from "react-bootstrap";
+import * as firebase from 'firebase'
 
 export default class SignIn extends Component {
+componentDidMount()
+{
+    const db=firebase.db();
+    console.log(db)
+}
 render() {
     return (
     <>
