@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Form} from "react-bootstrap";
 
-export default class SignOn extends Component
-{
-    render()
+const SignOn =({handleLogout})=>
+
     {
         return(
             <>
@@ -39,4 +38,5 @@ export default class SignOn extends Component
             </>
         );
     }
-}
+
+    export default SignOn;
