@@ -1,6 +1,5 @@
 import React from 'react'
 import Header from './Components/Header'
-import Action from './Components/Action'
 import {
     BrowserRouter as Router,
     Route,
@@ -9,11 +8,14 @@ import {
 
 import SignOn from './Components/SignOn'
 import SignIn from './Components/SignIn'
+//import firebase from 'firebase'
 
 function App() 
 {
+  //console.dir(firebase.database)
   return (
     <>
+    
       <Router>
     <Header />
                 <Switch>

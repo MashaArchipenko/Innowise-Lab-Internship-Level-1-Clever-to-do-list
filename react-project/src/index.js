@@ -2,23 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import './style.css'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
+import 'firebase/firestore'
+import 'firebase/auth'
 
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const firebaseConfig =
-{
-  apiKey: "AIzaSyBVhOkPiyC1GmA90x5m8G2wQGrgbsH6aBk",
-  authDomain: "react-project-c5fa9.firebaseapp.com",
-  databaseURL: "https://react-project-c5fa9-default-rtdb.firebaseio.com",
-  projectId: "react-project-c5fa9",
-  storageBucket: "react-project-c5fa9.appspot.com",
-  messagingSenderId: "280448464031",
-  appId: "1:280448464031:web:216edc31b841171c31deaa"
-};
+firebase.initializeApp({
+    apiKey:process.env.REACT_APP_API_KEY ,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+    databaseURL: process.env.REACT_APP_DATABASE_URL,
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_APP_ID
+}
+)
 
-firebase.initializeApp(firebaseConfig);
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
