@@ -7,6 +7,7 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.3",
     "bootstrap": "^4.6.0",
+    "env-cmd": "^10.1.0",
     "firebase": "^8.2.9",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
@@ -41,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
   }
 }

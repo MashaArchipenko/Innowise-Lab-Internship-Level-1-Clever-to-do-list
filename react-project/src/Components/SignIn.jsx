@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import { Form } from "react-bootstrap";
 
 const SignIn = (props) => {
@@ -9,7 +8,7 @@ const SignIn = (props) => {
     password,
     setPassword,
     handleLogin,
-    handlerSignUp,
+    handleSignUp,
     hasAccount,
     setHasAccount,
     emailError,
@@ -19,7 +18,9 @@ const SignIn = (props) => {
   return (
     <>
       <div className="form">
-        <span>Sign In</span>
+        {
+          hasAccount? <span>Sign In</span> : <span>Sign On</span>
+        }
         <Form>
           <Form.Group>
             <Form.Label>Email address</Form.Label>
@@ -27,7 +28,7 @@ const SignIn = (props) => {
               type="email"
               value={email}
               required
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e=> setEmail(e.target.value))}
               placeholder="Enter email"
             />
             <p className="errorMsg">{emailError}</p>
@@ -39,7 +40,7 @@ const SignIn = (props) => {
               type="password"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e => setPassword(e.target.value))}
               placeholder="Password"
             />
             <p className="errorMsg">{passwordError}</p>
@@ -47,27 +48,35 @@ const SignIn = (props) => {
           <div className="btnContainer"> 
           {hasAccount ? (
               <>
-              <button onClick={handleLogin}>Sign in</button>
-              <p></p>
+              <button className="button"  onClick={handleLogin}>Sign in</button>
               </>
           ): (
             <>
-            <button onClick={handlerSignUp}>Sign On</button>
-            <p></p>
+            <button onClick={handleSignUp} className="button">Sign On</button>
             </>
           )
-
           }
-          <button className="button">Submit</button></div>
-         
+        </div>
         </Form>
       </div>
       <div className="changeBlock">
         <div className="textSignUp">
+          {
+            hasAccount ? (
+          <>
           <p>Don't have account?</p>
-          <Link to="/signOn" className="button" onClick={()=>setHasAccount(!hasAccount)}>
+          <span  className="button" onClick={()=>setHasAccount(!hasAccount)}>
             Sign Up
-          </Link>
+          </span>
+          </>
+            ): (
+            <>
+              <p>Sign in to your account</p>
+              <span className="button" onClick={()=>setHasAccount(!hasAccount)}>Sign In</span>
+            </>
+            )
+          }
+          
         </div> 
       </div>
     </>
