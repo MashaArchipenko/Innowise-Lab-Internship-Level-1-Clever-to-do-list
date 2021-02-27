@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Components/Header";
-
 import LogOut from "./Components/LogOut";
 import SignIn from "./Components/SignIn";
 import fire from "./fire";
@@ -25,19 +24,27 @@ function App() {
 
   const handleLogin = () => {
     clearErrors();
-    fire.auth().signInWithEmailAndPassword(email, password).catch((err) => {
+    let a = fire
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      let usr = userCredential.user;
+      setUser(usr);
+      console.log(userCredential);
+    }).catch((err) => {
         // eslint-disable-next-line default-case
         switch (err.code) {
-          case "auth/invalid-email":
-          case "auth/user-disabled":
+          case 'auth/invalid-email':
           case "auth/user-not-found":
             setEmailError(err.message);
             break;
-          case "auth/wrong-password":
+          case "auth/invalid-password":
             setPasswordError(err.message);
             break;
+            default: alert(err);
         }
       });
+      console.dir(a);
   };
 
   const handleSignUp = () => {
@@ -48,11 +55,11 @@ function App() {
       .catch((err) => {
         // eslint-disable-next-line default-case
         switch (err.code) {
-          case "auth/email-already-in-use":
+          case "auth/email-already-exists":
           case "auth/invalid-email":
             setEmailError(err.message);
             break;
-          case "auth/weak-password":
+          case "auth/invalid-password":
             setPasswordError(err.message);
             break;
         }
@@ -82,8 +89,8 @@ function App() {
   return (
     <>
       <Header />
-      console.dir(user);
-      {user ? (
+      {
+      user ? (
         <LogOut handleLogout={handleLogout} />
       ) : (
         <SignIn

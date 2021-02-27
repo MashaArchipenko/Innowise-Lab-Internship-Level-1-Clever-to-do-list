@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LogOut =({handleLogout})=>
+const LogOut = ({handleLogout}) =>
 
     {
         return(
