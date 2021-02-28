@@ -12,7 +12,6 @@ function App() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [hasAccount, setHasAccount] = useState(false);
 
   const clearInput = () => {
     setEmail("");
@@ -29,13 +28,7 @@ function App() {
     fire
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        let usr = userCredential.user;
-        setUser(usr);
-        console.log(userCredential);
-        user = email;
-        setUser(user);
-      }).catch((err) => {
+      .then((result) =>setUser(result)).catch((err) => {
         switch (err.code) {
           case 'auth/invalid-email':
           case "auth/user-not-found":
@@ -46,7 +39,8 @@ function App() {
             break;
           default: alert(err);
         }
-      });
+      }); 
+      console.dir(user);
   };
 
   const handleSignUp = () => {
@@ -84,7 +78,7 @@ function App() {
 
   useEffect(() => {
     authListener();
-  }, []);
+  });
 
   return (
     <>
