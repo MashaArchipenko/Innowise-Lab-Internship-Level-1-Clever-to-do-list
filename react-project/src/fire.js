@@ -1,8 +1,6 @@
 import firebase from 'firebase'
 import 'firebase/auth'
-import 'firebase/auth'
 
-//console.log(`${process.env.REACT_APP_API_KEY}`);
 const fire =  firebase.initializeApp(
 {
     apiKey: "AIzaSyBVhOkPiyC1GmA90x5m8G2wQGrgbsH6aBk",//process.env.REACT_APP_API_KEY,

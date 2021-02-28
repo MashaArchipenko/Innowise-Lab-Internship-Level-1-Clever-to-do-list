@@ -7,11 +7,23 @@ import SignIn from './Components/SignIn';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
+
+  const checkConnectDb=()=>
+{
+  const db=fire.database();
+  const name=db.ref('name');
+  name.on('value',(elem)=>console.log(elem.val()));
+}
+
+checkConnectDb();
+
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  var defaultAuth=fire.auth();
 
   const clearInput = () => {
     setEmail("");
@@ -25,10 +37,14 @@ function App() {
 
   const handleLogin = () => {
     clearErrors();
-    fire
-      .auth()
+    defaultAuth
       .signInWithEmailAndPassword(email, password)
-      .then((result) =>setUser(result)).catch((err) => {
+      .then((result) => 
+      {
+        setUser(result.user);
+        console.log(user,result.user);
+  })
+      .catch((err) => {
         switch (err.code) {
           case 'auth/invalid-email':
           case "auth/user-not-found":
@@ -37,36 +53,35 @@ function App() {
           case "auth/invalid-password":
             setPasswordError(err.message);
             break;
-          default: alert(err);
+          default: alert(err.message);
         }
       }); 
-      console.dir(user);
   };
 
   const handleSignUp = () => {
     clearErrors();
-    fire
-      .auth()
+    defaultAuth
       .createUserWithEmailAndPassword(email, password)
       .catch((err) => {
         switch (err.code) {
-          case "auth/email-already-exists":
-          case "auth/invalid-email":
+          case 'auth/email-already-exists':
+          case 'auth/invalid-email':
             setEmailError(err.message);
             break;
-          case "auth/invalid-password":
+          case 'auth/invalid-password':
             setPasswordError(err.message);
             break;
+            default: alert(err.message)
         }
       });
   };
 
   const handleLogout = () => {
-    fire.auth().signOut();
+    defaultAuth.signOut();
   };
 
   const authListener = () => {
-    fire.auth().onAuthStateChanged((user) => {
+    defaultAuth.onAuthStateChanged((user) => {
       if (user) {
         clearInput();
         setUser(user);
@@ -78,7 +93,7 @@ function App() {
 
   useEffect(() => {
     authListener();
-  });
+  },[]);
 
   return (
     <>
@@ -111,7 +126,6 @@ function App() {
                   />
                 </Route>
               </Switch>
-            
           )
       }
       </Router>
