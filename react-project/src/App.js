@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Components/Header";
 import LogOut from "./Components/LogOut";
-import SignIn from "./Components/SignIn";
 import fire from "./fire";
+import SignOn from './Components/SignOn';
+import SignIn from './Components/SignIn';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState("");
@@ -24,15 +26,16 @@ function App() {
 
   const handleLogin = () => {
     clearErrors();
-    let a = fire
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      let usr = userCredential.user;
-      setUser(usr);
-      console.log(userCredential);
-    }).catch((err) => {
-        // eslint-disable-next-line default-case
+    fire
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        let usr = userCredential.user;
+        setUser(usr);
+        console.log(userCredential);
+        user = email;
+        setUser(user);
+      }).catch((err) => {
         switch (err.code) {
           case 'auth/invalid-email':
           case "auth/user-not-found":
@@ -41,10 +44,9 @@ function App() {
           case "auth/invalid-password":
             setPasswordError(err.message);
             break;
-            default: alert(err);
+          default: alert(err);
         }
       });
-      console.dir(a);
   };
 
   const handleSignUp = () => {
@@ -53,7 +55,6 @@ function App() {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .catch((err) => {
-        // eslint-disable-next-line default-case
         switch (err.code) {
           case "auth/email-already-exists":
           case "auth/invalid-email":
@@ -83,29 +84,43 @@ function App() {
 
   useEffect(() => {
     authListener();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
+    <Router>
       <Header />
       {
-      user ? (
-        <LogOut handleLogout={handleLogout} />
-      ) : (
-        <SignIn
-          email={email}
-          setEmail={setEmail}
-          password={password}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
-          handleSignUp={handleSignUp}
-          hasAccount={hasAccount}
-          setHasAccount={setHasAccount}
-          emailError={emailError}
-          passwordError={passwordError}
-        />
-      )}
+        user ? (<LogOut handleLogout={handleLogout} />):
+          (
+              <Switch>
+                <Route exact path="/" component={SignIn}>
+                  <SignIn
+                    email={email}
+                    setEmail={setEmail}
+                    password={password}
+                    setPassword={setPassword}
+                    handleLogin={handleLogin}
+                    emailError={emailError}
+                    passwordError={passwordError}
+                  />
+                </Route>
+                <Route exact path="/signOn">
+                  <SignOn
+                    email={email}
+                    setEmail={setEmail}
+                    password={password}
+                    setPassword={setPassword}
+                    handleSignUp={handleSignUp}
+                    emailError={emailError}
+                    passwordError={passwordError}
+                  />
+                </Route>
+              </Switch>
+            
+          )
+      }
+      </Router>
     </>
   );
 }
