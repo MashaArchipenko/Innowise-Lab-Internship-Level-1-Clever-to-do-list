@@ -35,8 +35,9 @@ checkConnectDb();
     setPasswordError("");
   };
 
-  const handleLogin = () => {
+  const handleLogin = (event) => {
     clearErrors();
+    event.preventDefault();
     defaultAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => 
@@ -58,7 +59,8 @@ checkConnectDb();
       }); 
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = (event) => {
+    event.preventDefault();
     clearErrors();
     defaultAuth
       .createUserWithEmailAndPassword(email, password)

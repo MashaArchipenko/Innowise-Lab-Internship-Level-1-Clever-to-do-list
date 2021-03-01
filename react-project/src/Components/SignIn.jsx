@@ -29,7 +29,6 @@ const SignIn = (props) => {
             />
             <p className="errorMsg">{emailError}</p>
           </Form.Group>
-
           <Form.Group controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
