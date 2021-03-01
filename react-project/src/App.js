@@ -3,31 +3,24 @@ import Header from "./Components/Header";
 import LogOut from "./Components/LogOut";
 import fire from "./fire";
 import SignOn from './Components/SignOn';
+import Action from './Components/Action.jsx';
 import SignIn from './Components/SignIn';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
-
-  const checkConnectDb=()=>
-{
-  const db=fire.database();
-  const name=db.ref('name');
-  name.on('value',(elem)=>console.log(elem.val()));
-}
-
-checkConnectDb();
 
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [name, setName] = useState("");
 
-  var defaultAuth=fire.auth();
 
   const clearInput = () => {
     setEmail("");
-    setPasswordError("");
+    setPassword("");
+    setName("");
   };
 
   const clearErrors = () => {
@@ -38,13 +31,11 @@ checkConnectDb();
   const handleLogin = (event) => {
     clearErrors();
     event.preventDefault();
-    defaultAuth
+    fire.auth()
       .signInWithEmailAndPassword(email, password)
-      .then((result) => 
-      {
-        setUser(result.user);
-        console.log(user,result.user);
-  })
+      .then((result) => {
+        alert(result);
+      })
       .catch((err) => {
         switch (err.code) {
           case 'auth/invalid-email':
@@ -56,14 +47,23 @@ checkConnectDb();
             break;
           default: alert(err.message);
         }
-      }); 
+      });
   };
 
   const handleSignUp = (event) => {
     event.preventDefault();
     clearErrors();
-    defaultAuth
+    fire.auth()
       .createUserWithEmailAndPassword(email, password)
+      .then((currentUser) => {
+        currentUser.user.updateProfile({ displayName: name });
+        fire.database().ref('users/' + currentUser.user.uid).set(
+          {
+            username: name,
+            email: email
+          }
+        );
+      })
       .catch((err) => {
         switch (err.code) {
           case 'auth/email-already-exists':
@@ -73,19 +73,20 @@ checkConnectDb();
           case 'auth/invalid-password':
             setPasswordError(err.message);
             break;
-            default: alert(err.message)
+          default: alert(err.message)
         }
       });
   };
 
   const handleLogout = () => {
-    defaultAuth.signOut();
+    fire.auth().signOut();
   };
 
   const authListener = () => {
-    defaultAuth.onAuthStateChanged((user) => {
+    fire.auth().onAuthStateChanged((user) => {
       if (user) {
         clearInput();
+        setName(user.displayName)
         setUser(user);
       } else {
         setUser("");
@@ -95,41 +96,50 @@ checkConnectDb();
 
   useEffect(() => {
     authListener();
-  },[]);
+  }, []);
 
   return (
     <>
-    <Router>
-      <Header />
-      {
-        user ? (<LogOut handleLogout={handleLogout} />):
-          (
-              <Switch>
-                <Route exact path="/" component={SignIn}>
-                  <SignIn
-                    email={email}
-                    setEmail={setEmail}
-                    password={password}
-                    setPassword={setPassword}
-                    handleLogin={handleLogin}
-                    emailError={emailError}
-                    passwordError={passwordError}
-                  />
-                </Route>
-                <Route exact path="/signOn">
-                  <SignOn
-                    email={email}
-                    setEmail={setEmail}
-                    password={password}
-                    setPassword={setPassword}
-                    handleSignUp={handleSignUp}
-                    emailError={emailError}
-                    passwordError={passwordError}
-                  />
-                </Route>
-              </Switch>
-          )
-      }
+      <Router>
+        {
+          user ? (
+            <>
+              <LogOut handleLogout={handleLogout} />
+              <Action />
+            </>
+          ) :
+            (
+              <>
+                <Header />
+                <Switch>
+                  <Route exact path="/" component={SignIn}>
+                    <SignIn
+                      email={email}
+                      setEmail={setEmail}
+                      password={password}
+                      setPassword={setPassword}
+                      handleLogin={handleLogin}
+                      emailError={emailError}
+                      passwordError={passwordError}
+                    />
+                  </Route>
+                  <Route exact path="/signOn">
+                    <SignOn
+                      email={email}
+                      setEmail={setEmail}
+                      password={password}
+                      setPassword={setPassword}
+                      handleSignUp={handleSignUp}
+                      emailError={emailError}
+                      passwordError={passwordError}
+                      name={name}
+                      setName={setName}
+                    />
+                  </Route>
+                </Switch>
+              </>
+            )
+        }
       </Router>
     </>
   );

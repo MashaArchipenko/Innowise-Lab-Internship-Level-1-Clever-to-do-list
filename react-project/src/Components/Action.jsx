@@ -1,25 +1,17 @@
-import React,{Component} from 'react'
-import {
-    BrowserRouter as Router,
-    Route,
-    Switch
-} from "react-router-dom"
-import SignOn from './SignOn'
-import SignIn from './SignIn'
+import React from 'react'
+import Calendar from './Calendar';
 
-export default class Action extends Component
+const Action = () =>
 {
-    render()
-    {
-        return(
-            <Router>
-                <Switch>
-                    <Route exact path="/" component={SignIn} />
-                    <Route exact path="/signOn" component={SignOn} />
-                </Switch>
-            
-</Router>
-        );
-    }
-}
+    
+    return(
+        <>
+        <div className="components">
+        <Calendar />
+        <div className="events"></div>
+        </div>
+        </>
+    )
+} 
 
+export default Action;

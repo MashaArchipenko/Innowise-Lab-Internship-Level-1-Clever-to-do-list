@@ -11,6 +11,8 @@ const SignOn = (props) => {
     handleSignUp,
     emailError,
     passwordError,
+    name,
+    setName
   } = props;
 
   return (
@@ -18,6 +20,16 @@ const SignOn = (props) => {
       <div className="form">
         <span>Sign On</span>
         <Form>
+        <Form.Group>
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="text"
+              value={name}
+              required
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter name"
+            />
+          </Form.Group>
           <Form.Group>
             <Form.Label>Email address</Form.Label>
             <Form.Control

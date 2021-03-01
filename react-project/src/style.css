@@ -1,11 +1,12 @@
 header {
-    
     height: 76px;
     padding: 2% 15%;
     background: rgba(204, 203, 202, 0.24);
     font-size: 25px;
     line-height: 30px;
     color: white;
+    align-items: center;
+    display: flex !important;
 }
 @media screen and (max-width:500px)
 {
@@ -72,7 +73,6 @@ body {
 .button:hover
 {
     color: white;
-    padding: 1% 5%;
     background-color: #073d24;
     text-decoration: none;
     
@@ -91,4 +91,25 @@ form{
     display: flex;
     margin-top: 20%;
     margin-left: 40%;
+}
+
+.logout
+{
+    position: absolute;
+    right: 0;
+    font-size: 15px;
+    padding: 0.6% 2.5%;
+    margin-right: 15%;
+
+}
+
+.calendar
+{
+    
+}
+
+.events
+{
+    
+    background: rgba(196, 196, 196, 0.69);
 }
