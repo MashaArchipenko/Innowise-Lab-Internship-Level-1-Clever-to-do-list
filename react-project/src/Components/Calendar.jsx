@@ -10,83 +10,73 @@ import {
   isSameMonth,
   isSameDay,
   endOfWeek,
-  parse
+  parse,
 } from "date-fns";
 
+
+
 const Calendar = () => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const renderHeader = () => {
-    const dateFormat = "mmmm yyyy";
+  const header = () => {
+    const monthFormat = "MMMM yyyy";
     return (
-      <div className="header row flex-middle">
-        <div className="col col-start">
-          <div className="icon" onClick={prevMonth()}>
-            chevron_left
-          </div>
+      <div className="calendarHeader">
+        <div className="icon" onClick={prevMonth}>
+          &lt;
         </div>
-        <div className="col col-center">
-          <span>{format(currentMonth, dateFormat)}</span>
+        <div className="centerClndr">
+          <span>{format(currentDate, monthFormat)}</span>
         </div>
-        <div className="col col-end" onClick={nextMonth()}>
-          <div className="icon">chevron_right</div>
+        <div className="icon" onClick={nextMonth}>
+          &gt;
         </div>
       </div>
     );
   };
 
-  const renderDays = () => {
-    const dateFormat = "dddd";
+  const days = () => {
+    const dateFormat = "EEEE";
     const days = [];
-    let startDate = startOfWeek(currentMonth);
+    let startDate = startOfWeek(currentDate);
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div className="col col-center" key={i}>
+        <div className="dayColumn" key={i}>
           {format(addDays(startDate, i), dateFormat)}
         </div>
       );
     }
-    return <div className="days row">{days}</div>;
+    return <div className="daysRow">{days}</div>;
   };
 
-  const renderCells = () => {
-    const monthStart = startOfMonth(currentMonth);
+  const cells = () => {
+    const monthStart = startOfMonth(currentDate);
     const monthEnd = endOfMonth(monthStart);
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
-
     const dateFormat = "d";
     const rows = [];
-
     let days = [];
     let day = startDate;
     let formattedDate = "";
-
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
         days.push(
           <div
-            className={`col cell ${
-              !isSameMonth(day, monthStart)
-                ? "disabled"
-                : isSameDay(day, selectedDate)
-                ? "selected"
-                : ""
-            }`}
+            className="number"
             key={day}
-            onClick={() => onDateClick(parse(cloneDay))}
+            onClick={() => onDateClick(parse(cloneDay,'d MMMM yyyy', new Date()))}
           >
-            <span className="number">{formattedDate}</span>
-            <span className="bg">{formattedDate}</span>
+            {formattedDate}
           </div>
         );
         day = addDays(day, 1);
       }
       rows.push(
-        <div className="row" key={day}>
+        <div className="rowCal" key={day}>
           {days}
         </div>
       );
@@ -95,23 +85,25 @@ const Calendar = () => {
     return <div className="body">{rows}</div>;
   };
 
-  const onDateClick = (day) => {
-    setSelectedDate(day);
+  const nextMonth = () => {
+    setCurrentDate(addMonths(currentDate, 1));
   };
 
-  const nextMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, 1));
-  };
   const prevMonth = () => {
-    setCurrentMonth(subMonths(currentMonth, 1));
+    setCurrentDate(subMonths(currentDate, 1));
+  };
+
+  const onDateClick = (day) => {
+    setSelectedDate(day);
+    console.dir(selectedDate);
   };
 
   return (
     <>
       <div className="calendar">
-        {renderHeader()}
-        {renderDays()}
-        {renderCells()}
+        <div>{header()}</div>
+        <div>{days()}</div>
+        <div>{cells()}</div>
       </div>
     </>
   );
