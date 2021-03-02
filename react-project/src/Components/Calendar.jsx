@@ -12,6 +12,7 @@ import {
   endOfWeek,
   parse,
 } from "date-fns";
+import Events from "./Events";
 
 
 
@@ -64,9 +65,11 @@ const Calendar = () => {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
+        
         days.push(
           <div
-            className="number"
+
+            className ="number"
             key={day}
             onClick={() => onDateClick(parse(cloneDay,'d MMMM yyyy', new Date()))}
           >
@@ -94,6 +97,7 @@ const Calendar = () => {
   };
 
   const onDateClick = (day) => {
+
     setSelectedDate(day);
     console.dir(selectedDate);
   };
@@ -105,6 +109,7 @@ const Calendar = () => {
         <div>{days()}</div>
         <div>{cells()}</div>
       </div>
+      <Events selectedDate={selectedDate}/>
     </>
   );
 };
