@@ -1,5 +1,5 @@
 header {
-    height: 76px;
+    height: 60px;
     padding: 2% 15%;
     background: rgba(204, 203, 202, 0.24);
     font-size: 25px;
@@ -11,8 +11,8 @@ header {
 @media screen and (max-width:500px)
 {
     header{
-        height: 50px;
-    font-size: 15px;
+        height: 40px;
+        font-size: 15px;
     }
 }
 
@@ -170,11 +170,11 @@ form{
 
 }
 
-.addTask
+.addTask /*button*/
 {
     background-color: #073d24;
     color: white;
-    padding: 0.3%;
+    width: 25%;
     border-radius: 2px;
 }
 
@@ -198,6 +198,18 @@ form{
 }
 
 
+#newEvn
+{
+    height: 5%;
+    width:50%;
+}
+
+.addEvn
+{
+    padding: 1% 10%;
+    display: flex;
+    justify-content: space-between;
+}
 
 .events
 {

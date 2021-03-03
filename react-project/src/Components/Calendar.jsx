@@ -64,15 +64,12 @@ const Calendar = () => {
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
-        const cloneDay = day;
-        
+        let cloneDay = day;
         days.push(
           <div
-
             className ="number"
             key={day}
-            onClick={() => onDateClick(parse(cloneDay,'d MMMM yyyy', new Date()))}
-          >
+            onClick={() => onDateClick(format(cloneDay,'d MMMM yyyy'))}>
             {formattedDate}
           </div>
         );
@@ -97,9 +94,9 @@ const Calendar = () => {
   };
 
   const onDateClick = (day) => {
-
+    console.log(day);
     setSelectedDate(day);
-    console.dir(selectedDate);
+    console.log(selectedDate);
   };
 
   return (
