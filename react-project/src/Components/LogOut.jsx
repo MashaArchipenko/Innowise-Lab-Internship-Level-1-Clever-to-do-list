@@ -4,7 +4,7 @@ import fire from "../fire";
 const LogOut = ({ handleLogout }) => {
   /*not use this function, only for my check
     not forget to delete after all */
-  const getName = () => {
+  /*const getName = () => {
     let id = fire.auth().currentUser.uid;
     return fire
       .database()
@@ -14,7 +14,7 @@ const LogOut = ({ handleLogout }) => {
         console.log(res.val().username);
       })
       .catch((e) => console.log(e));
-  };
+  };*/
 
   return (
     <header>

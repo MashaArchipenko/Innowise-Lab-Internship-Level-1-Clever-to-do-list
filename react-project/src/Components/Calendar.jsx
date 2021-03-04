@@ -7,10 +7,7 @@ import {
   addDays,
   endOfMonth,
   startOfMonth,
-  isSameMonth,
-  isSameDay,
   endOfWeek,
-  parse,
 } from "date-fns";
 import Events from "./Events";
 
@@ -96,6 +93,7 @@ const Calendar = () => {
   const onDateClick = (day) => {
     console.log(day);
     setSelectedDate(day);
+    
     console.log(selectedDate);
   };
 
