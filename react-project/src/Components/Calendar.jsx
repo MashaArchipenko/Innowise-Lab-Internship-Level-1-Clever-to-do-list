@@ -6,12 +6,14 @@ import {
   startOfWeek,
   addDays,
   endOfMonth,
+  isSameMonth,
+  isSameDay,
   startOfMonth,
   endOfWeek,
+  parseISO
 } from "date-fns";
 import Events from "./Events";
-
-
+import fire from '../fire'
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -48,6 +50,41 @@ const Calendar = () => {
     return <div className="daysRow">{days}</div>;
   };
 
+  const array=[];
+  const db = fire.database();
+  const id = fire.auth().currentUser.uid;
+  const getArray =()=>
+  {
+    var eventsRef = db.ref("users/" + id + "/dates");
+    eventsRef.on("value", (res) => {
+      array.push(res.val());
+    });
+  }
+
+  const checkEventsOnDate = (date) =>
+  {
+    getArray();
+    let value=[];
+    if(array[0] != null)
+    {
+      array[0].forEach((i)=>
+      {
+        if(date == i.dates)
+      {
+       if(i.done == true)
+       {
+          value.push(<span className="circle">&#10004;</span>)
+       } 
+       else 
+       value.push(<span className="circle">&#10008;</span>)
+      }
+      })
+      return <div className="checkVal">{value}</div> 
+    }
+
+
+  }
+
   const cells = () => {
     const monthStart = startOfMonth(currentDate);
     const monthEnd = endOfMonth(monthStart);
@@ -64,9 +101,18 @@ const Calendar = () => {
         let cloneDay = day;
         days.push(
           <div
-            className ="number"
+            className = {`number ${
+              !isSameMonth(day, monthStart)
+                ? "disabled"
+                : isSameDay(day, selectedDate)
+                ? "selected"
+                : ""
+            }`}
             key={day}
-            onClick={() => onDateClick(format(cloneDay,'d MMMM yyyy'))}>
+            onClick={() => {
+              onDateClick(format(cloneDay, "d MMMM yyyy"));
+            }}
+          > {checkEventsOnDate(format(cloneDay, "d MMMM yyyy"))}
             {formattedDate}
           </div>
         );
@@ -83,18 +129,15 @@ const Calendar = () => {
   };
 
   const nextMonth = () => {
-    setCurrentDate(addMonths(currentDate, 1));
+    setCurrentDate(addMonths(parseISO(currentDate), 1));
   };
 
   const prevMonth = () => {
-    setCurrentDate(subMonths(currentDate, 1));
+    setCurrentDate(subMonths(parseISO(currentDate), 1));
   };
 
   const onDateClick = (day) => {
-    console.log(day);
     setSelectedDate(day);
-    
-    console.log(selectedDate);
   };
 
   return (
@@ -104,7 +147,7 @@ const Calendar = () => {
         <div>{days()}</div>
         <div>{cells()}</div>
       </div>
-      <Events selectedDate={selectedDate}/>
+      <Events selectedDate={selectedDate} />
     </>
   );
 };

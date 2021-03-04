@@ -167,6 +167,12 @@ form{
     border: 1px solid rgba(0, 0, 0, 0.171);
     border-radius: 2px;
     transition: 1s;
+}
+
+.disabled
+{
+    background: #38464356;
+    color: rgba(255, 255, 255, 0.349);
 
 }
 
@@ -178,7 +184,8 @@ form{
     margin-top: 2%;
 }
 
-.number:hover
+
+.selected,.number:hover
 {
     border: 1px solid white;
     border-radius: 5px;
@@ -197,19 +204,22 @@ form{
     
 }
 
-
-
-
-#newEvn
+.checkVal
 {
-    
+    width: 1%;
+    height: inherit;
 }
 
+.circle
+{
+    float: left;
+    color: red;
+}
 .events
 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    margin:1% 15%;
+    margin: 1% 15%;
     background: rgba(196, 196, 196, 0.69);
 }
 

@@ -1,6 +1,5 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import fire from "../fire";
-import { isEqual } from "date-fns";
 
 const Events = ({ selectedDate }) => {
   const [task, setTask] = useState("");
@@ -14,60 +13,84 @@ const Events = ({ selectedDate }) => {
     var eventsRef = db.ref("users/" + id + "/dates");
     eventsRef.on("value", (res) => {
       array.push(res.val());
-      console.log(res.val());
     });
-    console.dir("array ", array);
   };
 
   const clearInput = () => {
     setTask("");
   };
 
+  /*same error*/
   const createEvent = (event) => {
     clearInput();
     event.preventDefault();
-    const countEvents = fire.database().ref("users/" + id + "/dates");
+    let ar=[];
+    console.log("sel date",selectedDate);
+    const countEvents = db.ref("users/" + id + "/dates");
     countEvents.once("value").then((snapshot) => {
-      let count = 0;
-      snapshot.forEach(() => count++);
-      setEventCount(count);
+      //let count = 0;
+      ar.push(snapshot.val())//() == null ? count= 0 : snapshot.val().forEach(() => count++);
+     // console.log("coun",count);setEventCount(count);console.log("eventc",eventCount);
     });
-    console.dir("event count", eventCount)
-    fire
-      .database()
+    let count=0;console.dir(ar[0])
+    if(ar[0]!==undefined) count=ar[0].length(); ///undefined
+    console.log("count",count)
+    db
       .ref("users/" + id + "/dates/" + eventCount)
-      .set({ dates: selectedDate, done: "false", event: task })
-      .then(console.log("created"))
+      .set({ id: eventCount, dates: selectedDate, done: "false", event: task })
+      .then(console.log("created",eventCount))
       .catch((e) => console.error(e.message));
-    setEventCount(Number(eventCount) + 1);
   };
 
   const generateToDoList = () => {
     getEventsCount();
-    let events = [];
-    let done = [];
-    let value=[];
-    console.dir(array[0]);
+    let value = [];
     if (array[0] != null) {
-      array.forEach((i) => {
-        console.log(i);
-        console.log("selD and iDat: "+selectedDate,i.dates)
-        if (selectedDate == i.dates) {
-          console.log("equal");
-          console.log("i.event"+i.event)
-          events.push(i.event);
-          done.push(i.done);
-          value.push(
-            <div>
-            {i.done ? <input type="checkbox" name="doneVal" value={i.done} checked />: <input type="checkbox" name="doneVal" value={i.done} />} 
-            <label for="subscribeNews">{i.event}</label>
-            </div>
-            );
-        } else console.log("not");
+      array[0].forEach((i) => {
+        if (selectedDate === i.dates) {
+          console.log("i ",i);
+          i.done == true
+            ? value.push(
+                <div>
+                  <input
+                    type="checkbox"
+                    name={i.id}
+                    onChange={changeStatus}
+                    value={i.done}
+                    key={i.done}
+                    readOnly
+                    checked
+                  />
+                  <label key={i.event}>{i.event}</label>
+                </div>
+              )
+            : value.push(
+                <div>
+                  <input
+                    type="checkbox"
+                    name={i.id}
+                    onChange={changeStatus}
+                    value={i.done}
+                    key={i.done}
+                  />
+                  <label key={i.event}>{i.event}</label>
+                </div>
+              );
+        } else {
+          console.log("not");
+        }
       });
     }
-    console.log(value)
     return <div>{value}</div>;
+  };
+
+  const changeStatus = (event) => {
+    const flag=Boolean(event.target.value);
+    console.dir(event.target.name);
+    console.log(flag);
+    db.ref("users/" + id + "/dates/" + event.target.name)
+      .update({id:event.target.name, dates: selectedDate, done: flag})
+      .then(console.log("created")).then(event.target.value=flag);
   };
 
   return (
