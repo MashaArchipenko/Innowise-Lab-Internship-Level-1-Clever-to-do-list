@@ -1,79 +1,75 @@
 import React, { useState } from "react";
 import fire from "../fire";
+import NewTask from "./NewTask";
+import UpdateTask from './UpdateTask'
 
 const Events = ({ selectedDate }) => {
-  const [task, setTask] = useState("");
-  const [eventCount, setEventCount] = useState(0);
-
   const db = fire.database();
   const id = fire.auth().currentUser.uid;
 
-  let array = [];
-  const getEventsCount = () => {
+  const getEvents = () => {
+    let array=[];
     var eventsRef = db.ref("users/" + id + "/dates");
     eventsRef.on("value", (res) => {
       array.push(res.val());
     });
+    console.log("arr",array);
+    return array[0];
   };
 
-  const clearInput = () => {
-    setTask("");
-  };
-
-  /*same error*/
-  const createEvent = (event) => {
-    clearInput();
-    event.preventDefault();
-    let ar=[];
-    console.log("sel date",selectedDate);
-    const countEvents = db.ref("users/" + id + "/dates");
-    countEvents.once("value").then((snapshot) => {
-      //let count = 0;
-      ar.push(snapshot.val())//() == null ? count= 0 : snapshot.val().forEach(() => count++);
-     // console.log("coun",count);setEventCount(count);console.log("eventc",eventCount);
-    });
-    let count=0;console.dir(ar[0])
-    if(ar[0]!==undefined) count=ar[0].length(); ///undefined
-    console.log("count",count)
-    db
-      .ref("users/" + id + "/dates/" + eventCount)
-      .set({ id: eventCount, dates: selectedDate, done: "false", event: task })
-      .then(console.log("created",eventCount))
-      .catch((e) => console.error(e.message));
-  };
+  const [updateId,setUpdateId] = useState(null);
+  const [todos,setTodos] = useState(()=>
+  {
+    console.log(getEvents())
+    return getEvents();
+  })
 
   const generateToDoList = () => {
-    getEventsCount();
     let value = [];
-    if (array[0] != null) {
-      array[0].forEach((i) => {
+    console.log("todos ",todos);
+    if (todos != null) {
+      todos.forEach((i) => {
         if (selectedDate === i.dates) {
-          console.log("i ",i);
-          i.done == true
+          console.log("i ", i);
+          i.done === true
             ? value.push(
-                <div>
+                <div >
                   <input
                     type="checkbox"
-                    name={i.id}
+                    id={i.id}
                     onChange={changeStatus}
                     value={i.done}
                     key={i.done}
                     readOnly
                     checked
                   />
-                  <label key={i.event}>{i.event}</label>
+                  <label
+                    key={i.name}
+                    id={i.id}
+                    onClick={setUpdateValue}
+                    className="nameTsk"
+                  >
+                    {i.name}
+                  </label>
                 </div>
               )
             : value.push(
                 <div>
                   <input
                     type="checkbox"
-                    name={i.id}
+                    id={i.id}
                     onChange={changeStatus}
                     value={i.done}
                     key={i.done}
                   />
-                  <label key={i.event}>{i.event}</label>
+                  <label
+                    key={i.name}
+                    id={i.id}
+                    onClick={setUpdateValue}
+                    className="nameTsk"
+                  >
+                    {i.name}
+                  </label>
                 </div>
               );
         } else {
@@ -84,32 +80,34 @@ const Events = ({ selectedDate }) => {
     return <div>{value}</div>;
   };
 
+  const setUpdateValue=(event)=>
+  {
+    setUpdateId(event.target.id);
+  }
+
   const changeStatus = (event) => {
-    const flag=Boolean(event.target.value);
-    console.dir(event.target.name);
+    const flag = Boolean(event.target.value);
     console.log(flag);
-    db.ref("users/" + id + "/dates/" + event.target.name)
-      .update({id:event.target.name, dates: selectedDate, done: flag})
-      .then(console.log("created")).then(event.target.value=flag);
+    db.ref("users/" + id + "/dates/" + event.target.id)
+      .update({ id: event.target.id, dates: selectedDate, done: flag })
+      .then(console.log("created"))
+      .then((event.target.value = flag));
   };
+
+  const generateBlock = () =>
+  {
+    if(updateId==null)
+    {
+      return  <NewTask selectedDate={selectedDate} todos={todos} />
+    }
+    else return <UpdateTask todos={todos} updateId={updateId} setUpdateId={setUpdateId}/>
+  }
 
   return (
     <>
       <div className="events">
         <div className="todoList">{generateToDoList()}</div>
-        <div className="addEvn">
-          <textarea
-            type="text"
-            name="newTask"
-            value={task}
-            onChange={(e) => setTask(e.target.value)}
-            id="newEvn"
-            placeholder="Enter task"
-          />
-          <button onClick={createEvent} className="addTask">
-            Add new task
-          </button>
-        </div>
+       {generateBlock()}
       </div>
     </>
   );

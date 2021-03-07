@@ -10,10 +10,10 @@ import {
   isSameDay,
   startOfMonth,
   endOfWeek,
-  parseISO
+  parseISO,
 } from "date-fns";
 import Events from "./Events";
-import fire from '../fire'
+import fire from "../fire";
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -50,40 +50,30 @@ const Calendar = () => {
     return <div className="daysRow">{days}</div>;
   };
 
-  const array=[];
+  const array = [];
   const db = fire.database();
   const id = fire.auth().currentUser.uid;
-  const getArray =()=>
-  {
+  const getArray = () => {
     var eventsRef = db.ref("users/" + id + "/dates");
     eventsRef.on("value", (res) => {
       array.push(res.val());
     });
-  }
+  };
 
-  const checkEventsOnDate = (date) =>
-  {
+  const checkEventsOnDate = (date) => {
     getArray();
-    let value=[];
-    if(array[0] != null)
-    {
-      array[0].forEach((i)=>
-      {
-        if(date == i.dates)
-      {
-       if(i.done == true)
-       {
-          value.push(<span className="circle">&#10004;</span>)
-       } 
-       else 
-       value.push(<span className="circle">&#10008;</span>)
-      }
-      })
-      return <div className="checkVal">{value}</div> 
+    let value = [];
+    if (array[0] != null) {
+      array[0].forEach((i) => {
+        if (date === i.dates) {
+          if (i.done === true) {
+            value.push(<span className="circle">&#10004;</span>);
+          } else value.push(<span className="circle">&#10008;</span>);
+        }
+      });
+      return <div className="checkVal">{value}</div>;
     }
-
-
-  }
+  };
 
   const cells = () => {
     const monthStart = startOfMonth(currentDate);
@@ -99,9 +89,10 @@ const Calendar = () => {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         let cloneDay = day;
+        let event = checkEventsOnDate(format(cloneDay, "d MMMM yyyy"));
         days.push(
           <div
-            className = {`number ${
+            className={`number ${
               !isSameMonth(day, monthStart)
                 ? "disabled"
                 : isSameDay(day, selectedDate)
@@ -112,7 +103,9 @@ const Calendar = () => {
             onClick={() => {
               onDateClick(format(cloneDay, "d MMMM yyyy"));
             }}
-          > {checkEventsOnDate(format(cloneDay, "d MMMM yyyy"))}
+          >
+            {" "}
+            {event}
             {formattedDate}
           </div>
         );

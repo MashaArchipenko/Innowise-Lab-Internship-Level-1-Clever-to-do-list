@@ -204,6 +204,11 @@ form{
     
 }
 
+#newEvn
+{
+    height: auto;
+}
+
 .checkVal
 {
     width: 1%;
@@ -229,11 +234,23 @@ form{
     margin: 2% 5%;
     color: black;
     padding:1% 3%;
+    letter-spacing: 2.2px;
 }
 label{
     margin-left: 2%;
     font-size: large;
 }
+
+.chkd
+{
+    text-decoration: line-through;
+}
+
+.nchkd
+{
+    text-decoration: none;
+}
+
 
 .addEvn
 {
@@ -241,4 +258,19 @@ label{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.hideBl
+{
+    display:none;
+}
+.showBl
+{
+    display: visible;
+}
+
+.nameTsk:hover
+{
+    font-weight: bold;
+    cursor: pointer;
 }
