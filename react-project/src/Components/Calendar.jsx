@@ -54,15 +54,8 @@ const Calendar = () => {
     return <div className="daysRow">{days}</div>;
   };
 
-  /*const getArray = () => {
-    var eventsRef = db.ref("users/" + id + "/dates");
-    eventsRef.on("value", (res) => {
-      array.push(res.val());
-    });
-  };*/
 
   const checkEventsOnDate = (date) => {
-    //getArray();
     console.log(todos)
     let value = [];
     if (todos != null) {
