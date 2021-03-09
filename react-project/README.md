@@ -23,18 +23,19 @@ $ npm start
 
 # Database snapshot
 
-users
-    └──CurrentUserId
-         ├──dates   
-         |    ├──date
-         |    ├──done
-         |    ├──event
-         |    ├──id
-         |    └──name
-         | 
-         ├──email
-         └──userName
+* users
+    * CurrentUserId
+        * dates
+            * date
+            * done
+            * event
+            * id
+            * name
+        * email
+        * userName
     
+
+
 
 # Application stack
 
