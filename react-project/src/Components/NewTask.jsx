@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import fire from "../fire";
 
-
 function NewTask(props) {
-  const { selectedDate,todos} = props;
+  const { selectedDate, todos, setTodos } = props;
 
   const db = fire.database();
   const id = fire.auth().currentUser.uid;
@@ -11,11 +10,10 @@ function NewTask(props) {
   const [task, setTask] = useState("");
   const [name, setName] = useState("");
 
-  const [eventCount, setEventCount] = useState(()=>{
-    if(todos==null) return 0;
+  const [eventCount, setEventCount] = useState(() => {
+    if (todos == null) return 0;
     else return todos.length;
-  })
-
+  });
 
   const clearInput = () => {
     setTask("");
@@ -24,6 +22,7 @@ function NewTask(props) {
 
   const createTask = () => {
     clearInput();
+    console.log("todos",todos)
     db.ref("users/" + id + "/dates/" + eventCount)
       .set({
         id: eventCount,
@@ -31,12 +30,23 @@ function NewTask(props) {
         done: "false",
         event: task,
         name: name,
-      }).then(setEventCount(pre=>pre+1))
+      })
+      .then(setEventCount((pre) => pre + 1))
+      .then(
+        setTodos([
+          ...todos,
+          {
+            id: eventCount,
+            dates: selectedDate,
+            done: "false",
+            event: task,
+            name: name,
+          },
+        ])
+      )
       .catch((e) => console.error(e.message));
-      
   };
 
-  
   return (
     <>
       <div className="addEvn">

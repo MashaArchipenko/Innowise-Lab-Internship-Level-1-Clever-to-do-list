@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   format,
   addMonths,
@@ -16,8 +16,12 @@ import Events from "./Events";
 import fire from "../fire";
 
 const Calendar = () => {
+  const db = fire.database();
+  const id = fire.auth().currentUser.uid;
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [updateId, setUpdateId] = useState(null);
+  const [todos, setTodos] = useState([]);
 
   const header = () => {
     const monthFormat = "MMMM yyyy";
@@ -50,21 +54,19 @@ const Calendar = () => {
     return <div className="daysRow">{days}</div>;
   };
 
-  const array = [];
-  const db = fire.database();
-  const id = fire.auth().currentUser.uid;
-  const getArray = () => {
+  /*const getArray = () => {
     var eventsRef = db.ref("users/" + id + "/dates");
     eventsRef.on("value", (res) => {
       array.push(res.val());
     });
-  };
+  };*/
 
   const checkEventsOnDate = (date) => {
-    getArray();
+    //getArray();
+    console.log(todos)
     let value = [];
-    if (array[0] != null) {
-      array[0].forEach((i) => {
+    if (todos != null) {
+      todos.forEach((i) => {
         if (date === i.dates) {
           if (i.done === true) {
             value.push(<span className="circle">&#10004;</span>);
@@ -131,7 +133,25 @@ const Calendar = () => {
 
   const onDateClick = (day) => {
     setSelectedDate(day);
+    setUpdateId(null);
   };
+
+  async function getEvents() {
+    let array = [];
+    var eventsRef = db.ref("users/" + id + "/dates");
+    await eventsRef.on("value", (res) => {
+      console.log(res.val());
+      array.push(res.val());
+      setTodos(res.val())
+    });
+    //setTodos(array[0])
+  }
+
+  useEffect(()=>
+  {
+    getEvents();
+  },[]);
+
 
   return (
     <>
@@ -140,7 +160,14 @@ const Calendar = () => {
         <div>{days()}</div>
         <div>{cells()}</div>
       </div>
-      <Events selectedDate={selectedDate} />
+      <Events
+        todos={todos}
+        setTodos={setTodos}
+        getEvents={getEvents}
+        selectedDate={selectedDate}
+        updateId={updateId}
+        setUpdateId={setUpdateId}
+      />
     </>
   );
 };

@@ -1,39 +1,43 @@
-import React, { useState } from "react";
-import fire from "../fire";
-import NewTask from "./NewTask";
-import UpdateTask from './UpdateTask'
+import React, { useState } from 'react';
+import fire from '../fire';
+import NewTask from './NewTask';
+import UpdateTask from './UpdateTask';
 
-const Events = ({ selectedDate }) => {
+const Events = (props) => {
+  const {todos,setTodos,getEvents, selectedDate, updateId, setUpdateId } = props;
+
   const db = fire.database();
   const id = fire.auth().currentUser.uid;
 
-  const getEvents = () => {
-    let array=[];
-    var eventsRef = db.ref("users/" + id + "/dates");
-    eventsRef.on("value", (res) => {
-      array.push(res.val());
+  const getName = (upid) => {
+    todos.forEach((i) => {
+      if (i.id == upid) {
+        console.log("name ", i.name);
+        setUpdateName(i.name);
+      }
     });
-    console.log("arr",array);
-    return array[0];
   };
 
-  const [updateId,setUpdateId] = useState(null);
-  const [todos,setTodos] = useState(()=>
-  {
-    console.log(getEvents())
-    return getEvents();
-  })
+  const getTask = (upid) => {
+    todos.forEach((i) => {
+      if (i.id == upid) setUpdateTask(i.event);
+    });
+  };
+
+  const [updateTask, setUpdateTask] = useState("");
+  const [updateName, setUpdateName] = useState("");
 
   const generateToDoList = () => {
-    let value = [];
+    //let ar = getEvents();
     console.log("todos ",todos);
+    let value = [];
     if (todos != null) {
       todos.forEach((i) => {
         if (selectedDate === i.dates) {
           console.log("i ", i);
           i.done === true
             ? value.push(
-                <div >
+                <div>
                   <input
                     type="checkbox"
                     id={i.id}
@@ -80,10 +84,14 @@ const Events = ({ selectedDate }) => {
     return <div>{value}</div>;
   };
 
-  const setUpdateValue=(event)=>
-  {
+  const setUpdateValue = (event) => {
+    getTask(event.target.id);
+    //setUpdateTask(task);
+    getName(event.target.id);
+    //setUpdateName(name);
     setUpdateId(event.target.id);
-  }
+    console.log("name ", updateName);
+  };
 
   const changeStatus = (event) => {
     const flag = Boolean(event.target.value);
@@ -94,20 +102,47 @@ const Events = ({ selectedDate }) => {
       .then((event.target.value = flag));
   };
 
-  const generateBlock = () =>
-  {
-    if(updateId==null)
-    {
-      return  <NewTask selectedDate={selectedDate} todos={todos} />
-    }
-    else return <UpdateTask todos={todos} updateId={updateId} setUpdateId={setUpdateId}/>
-  }
+  const clearInput = () => {
+    setUpdateName("");
+    setUpdateTask("");
+  };
+
+  const saveChange = () => {
+    //update task
+    db.ref("users/" + id + "/dates/" + updateId)
+      .update({ event: updateTask, name: updateName })
+      .then(console.log("update"))
+      .then(setUpdateId(null))
+      .then(clearInput())
+      .then(setTodos(getEvents()));
+  };
+
+  const generateBlock = () => {
+    if (updateId == null) {
+      return (
+        <NewTask
+          selectedDate={selectedDate}
+          todos={todos}
+          setTodos={setTodos}
+        />
+      );
+    } else
+      return (
+        <UpdateTask
+          updateName={updateName}
+          setUpdateName={setUpdateName}
+          updateTask={updateTask}
+          setUpdateTask={setUpdateTask}
+          saveChange={saveChange}
+        />
+      );
+  };
 
   return (
     <>
       <div className="events">
         <div className="todoList">{generateToDoList()}</div>
-       {generateBlock()}
+        {generateBlock()}
       </div>
     </>
   );
