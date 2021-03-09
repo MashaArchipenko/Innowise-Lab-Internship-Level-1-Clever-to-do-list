@@ -4,7 +4,7 @@ import NewTask from './NewTask';
 import UpdateTask from './UpdateTask';
 
 const Events = (props) => {
-  const {todos,setTodos,getEvents, selectedDate, updateId, setUpdateId } = props;
+  const {todos,setTodos, selectedDate, updateId, setUpdateId } = props;
 
   const db = fire.database();
   const id = fire.auth().currentUser.uid;
@@ -107,6 +107,17 @@ const Events = (props) => {
     setUpdateTask("");
   };
 
+  function getEvents() {
+    let array = [];
+    var eventsRef = db.ref("users/" + id + "/dates");
+    eventsRef.on("value", (res) => {
+      console.log(res.val());
+      array.push(res.val());
+      setTodos(res.val())
+    });
+    //setTodos(array[0])
+  }
+
   const saveChange = () => {
     //update task
     db.ref("users/" + id + "/dates/" + updateId)
@@ -114,7 +125,7 @@ const Events = (props) => {
       .then(console.log("update"))
       .then(setUpdateId(null))
       .then(clearInput())
-      .then(setTodos(getEvents()));
+      .then(getEvents());
   };
 
   const generateBlock = () => {

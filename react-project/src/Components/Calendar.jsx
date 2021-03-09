@@ -163,7 +163,6 @@ const Calendar = () => {
       <Events
         todos={todos}
         setTodos={setTodos}
-        getEvents={getEvents}
         selectedDate={selectedDate}
         updateId={updateId}
         setUpdateId={setUpdateId}
