@@ -23,7 +23,7 @@ $ npm start
 
 # Database snapshot
 
-* users
+users
     └──CurrentUserId
          ├──dates   
          |    ├──date
