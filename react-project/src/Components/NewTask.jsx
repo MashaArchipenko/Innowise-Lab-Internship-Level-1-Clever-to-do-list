@@ -22,7 +22,6 @@ function NewTask(props) {
 
   const createTask = () => {
     clearInput();
-    console.log("todos",todos)
     db.ref("users/" + id + "/dates/" + eventCount)
       .set({
         id: eventCount,
@@ -44,7 +43,7 @@ function NewTask(props) {
           },
         ])
       )
-      .catch((e) => console.error(e.message));
+      .catch((e) => alert(e.message));
   };
 
   return (

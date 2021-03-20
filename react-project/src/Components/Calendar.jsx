@@ -56,7 +56,6 @@ const Calendar = () => {
 
 
   const checkEventsOnDate = (date) => {
-    console.log(todos)
     let value = [];
     if (todos != null) {
       todos.forEach((i) => {
@@ -133,7 +132,6 @@ const Calendar = () => {
     let array = [];
     var eventsRef = db.ref("users/" + id + "/dates");
     await eventsRef.on("value", (res) => {
-      console.log(res.val());
       array.push(res.val());
       setTodos(res.val())
     });

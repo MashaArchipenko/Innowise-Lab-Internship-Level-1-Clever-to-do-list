@@ -12,7 +12,6 @@ const Events = (props) => {
   const getName = (upid) => {
     todos.forEach((i) => {
       if (i.id == upid) {
-        console.log("name ", i.name);
         setUpdateName(i.name);
       }
     });
@@ -28,13 +27,10 @@ const Events = (props) => {
   const [updateName, setUpdateName] = useState("");
 
   const generateToDoList = () => {
-    //let ar = getEvents();
-    console.log("todos ",todos);
     let value = [];
     if (todos != null) {
       todos.forEach((i) => {
         if (selectedDate === i.dates) {
-          console.log("i ", i);
           i.done === true
             ? value.push(
                 <div>
@@ -76,8 +72,6 @@ const Events = (props) => {
                   </label>
                 </div>
               );
-        } else {
-          console.log("not");
         }
       });
     }
@@ -86,19 +80,14 @@ const Events = (props) => {
 
   const setUpdateValue = (event) => {
     getTask(event.target.id);
-    //setUpdateTask(task);
     getName(event.target.id);
-    //setUpdateName(name);
     setUpdateId(event.target.id);
-    console.log("name ", updateName);
   };
 
   const changeStatus = (event) => {
     const flag = Boolean(event.target.value);
-    console.log(flag);
     db.ref("users/" + id + "/dates/" + event.target.id)
       .update({ id: event.target.id, dates: selectedDate, done: flag })
-      .then(console.log("created"))
       .then((event.target.value = flag));
   };
 
@@ -111,7 +100,6 @@ const Events = (props) => {
     let array = [];
     var eventsRef = db.ref("users/" + id + "/dates");
     eventsRef.on("value", (res) => {
-      console.log(res.val());
       array.push(res.val());
       setTodos(res.val())
     });
@@ -122,7 +110,6 @@ const Events = (props) => {
     //update task
     db.ref("users/" + id + "/dates/" + updateId)
       .update({ event: updateTask, name: updateName })
-      .then(console.log("update"))
       .then(setUpdateId(null))
       .then(clearInput())
       .then(getEvents());

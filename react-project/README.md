@@ -34,9 +34,6 @@ $ npm start
         * email
         * userName
     
-
-
-
 # Application stack
 
 - firebase
