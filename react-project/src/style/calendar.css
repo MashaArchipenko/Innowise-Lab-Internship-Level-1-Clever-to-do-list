@@ -1,0 +1,98 @@
+.calendarHeader
+{
+    display: flex;
+    padding: 0.4% 15%;
+    background-color: #073d24d8;
+    justify-content:  space-between;
+    
+}
+
+.centerClndr
+{
+    align-items: center;
+}
+
+.icon 
+{
+    padding: 0.1%;
+    width: 2%;
+    height: 3%;
+    text-align: center;
+}
+.icon:hover
+{
+    cursor: pointer;
+    background-color: rgba(84, 122, 106, 0.568);
+}
+
+.daysRow
+{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0.3% 15%;
+    background: #384643e3;
+    border-radius: 5px;
+    padding:0.2% 1%;
+}
+
+
+.dayColumn
+{
+    padding: 0.5% 1.1%;
+}
+
+.rowCal{
+    display: flex;
+    padding: 0.3% 1%;
+    justify-content:  space-between;    
+
+}
+
+.number
+{
+    width: 10%;
+    padding: 1% 0.5%;
+    font-size: large;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.171);
+    border-radius: 2px;
+    transition: 1s;
+}
+
+.disabled
+{
+    background: #38464356;
+    color: rgba(255, 255, 255, 0.349);
+
+}
+
+.selected,.number:hover
+{
+    border: 1px solid white;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.body
+{
+    display: grid;
+    margin: 0% 15%;
+    background: #38464396;
+    grid-template-rows: repeat(5,1fr);
+    border-radius: 5px;
+    
+}
+.checkVal
+{
+    width: 1%;
+    height: inherit;
+}
+
+.circle
+{
+    float: left;
+    color: red;
+}

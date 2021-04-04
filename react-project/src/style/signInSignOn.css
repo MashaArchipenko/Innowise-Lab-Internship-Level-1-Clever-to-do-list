@@ -1,0 +1,63 @@
+.changeBlock {
+    width: 70%;
+    height: 19.688em;
+    /*315px*/
+    margin-left: 15%;
+    margin-top: 114px;
+
+    background: rgba(196, 196, 196, 0.69);
+    border-radius: 20px;
+    
+    padding-top: 115px;
+}
+
+.textSignUp {
+    width: 30%;
+    height: 92.41px;
+    margin-left: 65%;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+}
+
+.form
+{
+    width: 360px;
+    height: 444px;
+    margin-left: 20%;
+    margin-top: 49px;
+    position: absolute;
+    
+    background: #C4C4C4;
+    border-radius: 20px;
+
+}
+.form > span{
+
+    font-size: 20px;
+    line-height: 24px;
+    display: flex;
+    margin-top: 20%;
+    margin-left: 40%;
+}
+
+.button
+{
+    border: 2px solid black;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    padding: 1% 5%;
+    transition: 1s;
+    font-weight: lighter;
+    background: #091614;
+    box-shadow: 0px 4px 15px 2px #1C312D;
+    cursor: pointer;
+}
+
+.button:hover
+{
+    color: white;
+    background-color: #073d24;
+    text-decoration: none;
+    
+}

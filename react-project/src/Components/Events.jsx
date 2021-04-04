@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import fire from '../fire';
 import NewTask from './NewTask';
 import UpdateTask from './UpdateTask';
+import '../style/events.css'
 
 const Events = (props) => {
   const {todos,setTodos, selectedDate, updateId, setUpdateId } = props;

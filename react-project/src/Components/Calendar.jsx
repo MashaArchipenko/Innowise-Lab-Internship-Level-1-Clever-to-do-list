@@ -14,6 +14,7 @@ import {
 } from "date-fns";
 import Events from "./Events";
 import fire from "../fire";
+import '../style/calendar.css'
 
 const Calendar = () => {
   const db = fire.database();

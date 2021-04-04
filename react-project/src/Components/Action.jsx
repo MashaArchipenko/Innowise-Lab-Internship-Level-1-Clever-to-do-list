@@ -1,14 +1,15 @@
 import React from 'react'
 import Calendar from './Calendar';
+import style from '../style/action.module.css'
 
 const Action = () =>
 {
     
     return(
         <>
-        <div className="components">
+        <div className={style.components}>
         <Calendar />
-        <div className="events"></div>
+        <div className={style.events}></div>
         </div>
         </>
     )

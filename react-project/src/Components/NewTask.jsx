@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import fire from "../fire";
+import '../style/newTask.css'
 
 function NewTask(props) {
   const { selectedDate, todos, setTodos } = props;

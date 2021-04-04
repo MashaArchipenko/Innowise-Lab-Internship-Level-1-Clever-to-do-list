@@ -1,0 +1,11 @@
+.components
+{
+    color: rgb(190, 248, 209);
+}
+.events
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 1% 15%;
+    background: rgba(196, 196, 196, 0.69);
+}
